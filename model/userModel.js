@@ -4,8 +4,8 @@ const { Schema } = mongoose
 const UserSchema = new Schema({
   user_name: String,
   email: {type: String, unique: true},
-  password: String,
-  phone_number: {type: Number, unique: true, index: true},
+  password: {type: String, required: true},
+  phone_number: {type: Number, unique: true, index: true, required: true},
   wallet: Number,
   reciept: {
     value: Number,
