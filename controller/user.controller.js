@@ -1,10 +1,15 @@
 import userSchema from "../model/userModel.js";
-//import { Jwt } from "jsonwebtoken";
+import  Jwt  from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import dotenv from "dotenv";
+dotenv.config()
+
+
+
+
 const register = async (req, res) => {
+  const { phone_number, password, email } = req.body;
   try {
-    const { phone_number, password, email } = req.body;
-    console.log(req.body);
     const hashedPassword = await bcrypt.hash(password, 10);
     const registeredUser = await userSchema.create({
       phone_number: phone_number,
@@ -12,10 +17,16 @@ const register = async (req, res) => {
       email: email,
     });
     await registeredUser.save();
+    const userId = registeredUser._id
+    const registerToken = Jwt.sign({userId}, process.env.auth_key, {
+      expiresIn: 3 * 24 * 60 * 60 
+    })
+    
     if (!registeredUser) {
       return res.status(400).json({ error: "registeration faild" });
     }
-    return res.status(201).json({ message: "user registered successfully" });
+    res.coockie('jwt', registerToken, { httpOnly: true, maxAge:  3 * 24 * 60 * 60 * 1000})
+    return res.status(201).json({ message: "user registered successfully", token: registerToken });
   } catch (error) {
     return res
       .status(500)
