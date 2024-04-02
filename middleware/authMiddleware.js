@@ -4,7 +4,6 @@ import dotenv from "dotenv";
 dotenv.config();
 const verifyToken = async (req, res, next) => {
   const token = req.headers.authorization;
-  console.log(token);
   try {
     if (token) {
       Jwt.verify(token, process.env.auth_key, async(err, decodedToken) => {
