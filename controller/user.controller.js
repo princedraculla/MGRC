@@ -22,7 +22,7 @@ const register = async (req, res) => {
     if (!registeredUser) {
       return res.status(400).json({ error: "registeration faild" });
     }
-    res.coockie("jwt", registerToken, {
+    res.cookie("jwt", registerToken, {
       httpOnly: true,
       maxAge: 3 * 24 * 60 * 60 * 1000,
     });
