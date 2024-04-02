@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt"
 const { Schema } = mongoose
 
 const UserSchema = new Schema({
@@ -14,6 +15,12 @@ const UserSchema = new Schema({
   request_counter: Number,
   file_path: String,
   request_date: [Date]
+})
+
+UserSchema.pre("save", async function(next) {
+  const slat = await bcrypt.genSalt();
+  this.password = await bcrypt.hash(this.password, slat);
+  next()
 })
 
 const userSchema = mongoose.model('User', UserSchema)

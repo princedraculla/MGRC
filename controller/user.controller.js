@@ -5,12 +5,12 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const register = async (req, res) => {
-  const { phone_number, password, email } = req.body;
+  const { name ,phone_number, password, email } = req.body;
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
     const registeredUser = await userSchema.create({
+      user_name: name,
       phone_number: phone_number,
-      password: hashedPassword,
+      password: password,
       email: email,
     });
     await registeredUser.save();
