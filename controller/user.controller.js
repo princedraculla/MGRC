@@ -72,7 +72,9 @@ const userList = async (req, res) => {
   try {
     const users = await userSchema.find();
     return res.status(200).json({ Data: users });
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export { register, userList, login };

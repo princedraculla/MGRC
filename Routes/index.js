@@ -1,8 +1,9 @@
 import express from "express";
 import * as userRoutes from "./userRoutes.js";
+import * as chargeRouter from "./chargeRoutes.js"
 const app = express();
-
-const allRoutes = [[userRoutes.route]];
+app.use(express.json())
+const allRoutes = [[userRoutes.route], [chargeRouter.router]];
 
 
 
