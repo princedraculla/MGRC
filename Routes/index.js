@@ -5,8 +5,6 @@ const app = express();
 app.use(express.json())
 const allRoutes = [[userRoutes.route], [chargeRouter.router]];
 
-
-
 for (const router of allRoutes) {
     app.use(router)
 } 

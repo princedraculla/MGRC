@@ -13,7 +13,7 @@ const verifyToken = async (req, res, next) => {
           return res.status(400).json({ message: err.message });
         } else {
           let user = await userSchema.findById(decodedToken.userId);
-          req.userId = decodedToken.userId;
+          req.userId = decodedToken.id;
           res.locals.user = user
           next();
         }
