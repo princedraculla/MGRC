@@ -5,12 +5,12 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const register = async (req, res) => {
-  const { phone_number, password, email } = req.body;
+  const { name ,phone_number, password, email } = req.body;
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
     const registeredUser = await userSchema.create({
+      user_name: name,
       phone_number: phone_number,
-      password: hashedPassword,
+      password: password,
       email: email,
     });
     await registeredUser.save();
@@ -22,7 +22,7 @@ const register = async (req, res) => {
     if (!registeredUser) {
       return res.status(400).json({ error: "registeration faild" });
     }
-    res.coockie("jwt", registerToken, {
+    res.cookie("jwt", registerToken, {
       httpOnly: true,
       maxAge: 3 * 24 * 60 * 60 * 1000,
     });
@@ -72,7 +72,9 @@ const userList = async (req, res) => {
   try {
     const users = await userSchema.find();
     return res.status(200).json({ Data: users });
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export { register, userList, login };
