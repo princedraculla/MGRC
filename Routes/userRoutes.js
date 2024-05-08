@@ -7,7 +7,7 @@ const route = express.Router()
 
 route.post('/api/v1/register', register)
 route.post('/api/v1/login', login)
-route.get('/api/test/list',verifyToken, userList)
+route.get('/api/test/list', userList)
 
 
 export  {route}

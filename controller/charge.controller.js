@@ -8,7 +8,7 @@ const userCharge = async (req, res) => {
     const userExist = await userSchema.findById({
       _id: id,
     });
-    const userReciept = await userSchema.updateOne({
+    const userReciept = await userSchema.create({
       where: {
         _id: id,
       },
