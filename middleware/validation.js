@@ -5,6 +5,8 @@ const inputValidation = async (req, res, next) => {
 
   body(user_name).isString().isLength({ min: 3, max: 40 }).notEmpty()
   body(password).notEmpty()
+  body(email).isEmail().notEmpty().isString();
+  body(phone_number).isInt().notEmpty()
 
   next();
 };
