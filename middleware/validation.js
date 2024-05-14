@@ -1,15 +1,15 @@
 import { body } from "express-validator";
 
 const inputValidation = async (req, res, next) => {
-  const { user_name, password, email, phone_number } = req.body;
+  const { name, password, email, phone_number } = req.body;
+  console.log(req.body);
 
-  body(user_name).isString().isLength({ min: 3, max: 40 }).notEmpty()
-  body(password).notEmpty()
+  body(name).isString().isLength({ min: 3, max: 40 }).notEmpty();
+  body(password).notEmpty();
   body(email).isEmail().notEmpty().isString();
-  body(phone_number).isInt().notEmpty()
+  body(phone_number).isInt().notEmpty();
 
   next();
 };
 
-
-export default inputValidation
+export default inputValidation;
