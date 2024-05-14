@@ -8,6 +8,9 @@ const userCharge = async (req, res) => {
     const userExist = await userSchema.findById({
       _id: id,
     });
+    if (!userExist){
+      return res.status(404).json({message: "user does not exist"})
+    }
     const userReciept = await userSchema.create({
       where: {
         _id: id,
