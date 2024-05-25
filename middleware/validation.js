@@ -1,15 +1,40 @@
-import { body } from "express-validator";
+import { body, validationResult } from "express-validator";
 
-const inputValidation = async (req, res, next) => {
-  const { name, password, email, phone_number } = req.body;
-  console.log(req.body);
-
-  body(name).isString().isLength({ min: 3, max: 40 }).notEmpty();
-  body(password).notEmpty();
-  body(email).isEmail().notEmpty().isString();
-  body(phone_number).isInt().notEmpty();
-
-  next();
+const userRegisterValidationRules = () => {
+  return [
+    body("name")
+      .isString()
+      .notEmpty()
+      .exists()
+      .withMessage("user must have real name, required"),
+    body("phone_number")
+      .isNumeric()
+      .notEmpty()
+      .exists()
+      .withMessage("phone number must be number,required"),
+    body("password")
+      .isLength({ min: 5 })
+      .trim()
+      .withMessage("password must be at least five character")
+      .exists(),
+    body("email")
+      .isEmail()
+      .withMessage("email must be currect,required")
+      .exists(),
+  ];
 };
 
-export default inputValidation;
+const validate = (req, res, next) => {
+  const errors = validationResult(req);
+
+  if (errors.isEmpty()) {
+    return next();
+  }
+
+  const extractedErrors = [];
+  errors.array().map((err) => extractedErrors.push({ [err.param]: err.msg }));
+
+  return res.status(422).json({error : extractedErrors})
+};
+
+export { userRegisterValidationRules, validate };
