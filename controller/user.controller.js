@@ -46,7 +46,7 @@ const login = async (req, res) => {
         .status(404)
         .json({ message: "User with this Email not found" });
     } else {
-      const auth = bcrypt.compare(password, user.password);
+      const auth = await bcrypt.compare(password, user.password);
       if (!auth) {
         return res.status(400).json({ message: "password its incorrect" });
       }

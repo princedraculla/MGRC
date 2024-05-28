@@ -1,6 +1,6 @@
 import express from "express"
 import  {login, register, userList}  from "../controller/user.controller.js"
-import verifyToken from "../middleware/authMiddleware.js" 
+//import verifyToken from "../middleware/authMiddleware.js" 
 import {userRegisterValidationRules, validate} from "../middleware/validation.js"
 
 
