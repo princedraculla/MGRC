@@ -5,24 +5,20 @@ const userCharge = async (req, res) => {
   const { reciept } = req.body;
   const id = req.userId;
   try {
-    const userExist = await userSchema.findById({
-      _id: id,
-    });
-    if (!userExist){
-      return res.status(404).json({message: "user does not exist"})
-    }
-    const userReciept = await userSchema.create({
-      where: {
-        _id: id,
-      },
+    const charged = await userSchema.updateOne(
+      { _id: id },
+      {
+        $push: {
+          "reciept.value": reciept,
+          "reciept.reciept_date": date.format(
+            new Date(),
+            "YYYY/MM/DD HH:mm:ss"
+          ),
+        },
+      }
+    );
 
-      reciept: {
-        value: reciept,
-        reciept_date: date.format(new Date(), "YYYY/MM/DD HH:mm:ss"),
-      },
-    });
-    console.log(userReciept);
-    return res.status(201).json("success");
+    return res.status(201).json({ msg: `success ${charged}` });
   } catch (error) {
     console.log(error);
   }

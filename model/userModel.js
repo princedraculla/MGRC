@@ -16,12 +16,6 @@ const UserSchema = new Schema({
   file_path: [String],
 });
 
-UserSchema.pre("save", async function (next) {
-  const slat = await bcrypt.genSalt();
-  this.password = await bcrypt.hash(this.password, slat);
-  next();
-});
-
 const userSchema = mongoose.model("User", UserSchema);
 
 export default userSchema;
