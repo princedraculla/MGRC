@@ -27,13 +27,18 @@ const userCharge = async (req, res) => {
 
 const userUpload = async (req, res) => {
   try {
+    console.log(req);
+    //console.log("body content:  " + req.body);
+    console.log("req.file:    " + req.file)
+    console.log(req.path);
     const userId = req.userId;
     const userCanUpload = await userSchema.findById({ _id: userId });
-    if (!userCanUpload.reciept.value > 1000) {
+    if (!userCanUpload.reciept.value[1] > 1000) {
       return res.status(403).json({
         msg: "you dont have enough money for this opration!... first charge your account",
       });
     } else {
+      console.log("else statement");
     }
   } catch (error) {
     console.log(error);
