@@ -5,6 +5,7 @@ import userSchema from "../model/userModel.js";
 const userCharge = async (req, res) => {
   const { reciept } = req.body;
   const id = req.userId;
+  console.log(id);
   try {
     const charged = await userSchema.updateOne(
       { _id: id },
@@ -27,19 +28,12 @@ const userCharge = async (req, res) => {
 
 const userUpload = async (req, res) => {
   try {
-    console.log(req);
-    //console.log("body content:  " + req.body);
-    console.log("req.file:    " + req.file)
-    console.log(req.path);
+    console.log(req.file.path);
     const userId = req.userId;
-    const userCanUpload = await userSchema.findById({ _id: userId });
-    if (!userCanUpload.reciept.value[1] > 1000) {
-      return res.status(403).json({
-        msg: "you dont have enough money for this opration!... first charge your account",
-      });
-    } else {
-      console.log("else statement");
-    }
+   const userWallet = await userSchema.findById(userId)
+   console.log(userWallet.wallet);
+   console.log(userWallet.email);
+   return res.status(200).json({message: req.file})
   } catch (error) {
     console.log(error);
     return res.status(500).json({ msg: error.message });

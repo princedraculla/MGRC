@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { set } from "mongoose";
 import bcrypt from "bcrypt";
 const { Schema } = mongoose;
 
@@ -16,6 +16,18 @@ const UserSchema = new Schema({
   file_path: [String],
 });
 
+UserSchema.pre("save", function (next) {
+  const user = this;
+
+  const totalValue = user.reciept.value.reduce((acc, numbers) => {
+    return acc + numbers;
+  }, 0);
+
+  user.wallet = totalValue;
+
+  next();
+});
 const userSchema = mongoose.model("User", UserSchema);
+
 
 export default userSchema;

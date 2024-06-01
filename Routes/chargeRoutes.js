@@ -6,10 +6,6 @@ const router = express.Router()
 
 
 router.post('/api/v1/charge', verifyToken, userCharge)
-router.post('/api/v1/upload', verifyToken ,upload.single('file'), (req, res) => {
-  console.log(req.body);
-  console.log(req.file);
-  return res.json({msg: req.file.filename})
-})
+router.post('/api/v1/upload', verifyToken ,upload.single('file'), userUpload)
 
 export  {router}
