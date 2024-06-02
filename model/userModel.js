@@ -16,18 +16,24 @@ const UserSchema = new Schema({
   file_path: [String],
 });
 
-UserSchema.pre("save", function (next) {
-  const user = this;
+UserSchema.pre("findeOneAndUpdate", async function (next) {
+  const update = this.getUpdate()
 
-  const totalValue = user.reciept.value.reduce((acc, numbers) => {
-    return acc + numbers;
-  }, 0);
+  if (update["reciept.value"]) {
+    const doctoUpdate = await this.model.findOne(this.getQuery());
 
-  user.wallet = totalValue;
+    const totalValue = update["reciept.value"].reduce((acc, value) => {
+      return acc + value;
+    }, 0);
 
+    doctoUpdate.wallet = totalValue;
+    await doctoUpdate.save();
+  }
   next();
 });
-const userSchema = mongoose.model("User", UserSchema);
 
+
+
+const userSchema = mongoose.model("User", UserSchema);
 
 export default userSchema;
