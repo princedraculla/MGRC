@@ -7,8 +7,8 @@ dotenv.config();
 const register = async (req, res) => {
   const { name, phone_number, password, email } = req.body;
   try {
-    const salt = await bcrypt.genSalt()
-    const hashedPassword = bcrypt.hash(password,salt)
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = bcrypt.hash(password, salt);
     const registeredUser = await userSchema.create({
       user_name: name,
       phone_number: phone_number,

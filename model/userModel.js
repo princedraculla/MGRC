@@ -16,24 +16,6 @@ const UserSchema = new Schema({
   file_path: [String],
 });
 
-UserSchema.pre("findeOneAndUpdate", async function (next) {
-  const update = this.getUpdate()
-
-  if (update["reciept.value"]) {
-    const doctoUpdate = await this.model.findOne(this.getQuery());
-
-    const totalValue = update["reciept.value"].reduce((acc, value) => {
-      return acc + value;
-    }, 0);
-
-    doctoUpdate.wallet = totalValue;
-    await doctoUpdate.save();
-  }
-  next();
-});
-
-
-
 const userSchema = mongoose.model("User", UserSchema);
 
 export default userSchema;
