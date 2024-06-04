@@ -31,7 +31,7 @@ const userCharge = async (req, res) => {
       );
       console.log(moneyInWallet);
       return res.status(201).json({
-        msg: `success opration your account has: ${moneyInWallet.wallet} `,
+        msg: `success... your account successfully charged `,
       });
     }
   } catch (error) {
@@ -42,33 +42,22 @@ const userCharge = async (req, res) => {
 const userUpload = async (req, res) => {
   try {
     const id = req.userId;
-    console.log(id);
     const userWallet = await userSchema.findById(id);
     if (userWallet.wallet >= 10000) {
-      console.log(req.file);
       const uploadedFile = await userSchema.updateOne(
         { _id: id },
         {
           $push: { file_path: req.file.path },
+          $inc: {
+            wallet: -10000,
+          },
+          $push: {
+            "reciept.value": -10000,
+          },
+          $inc: { request_counter: 1}
         }
       );
-      if (
-        uploadedFile.acknowledged === true &&
-        uploadedFile.modifiedCount === 1
-      ) {
-        const minusMoney = await userSchema.updateOne(
-          { _id: id },
-          {
-            $inc: {
-              wallet: -10000,
-            },
-            $push: {
-              "reciept.value": -10000,
-            },
-          }
-        );
-        console.log(minusMoney.modifiedCount);
-      }
+      console.log(uploadedFile);
       return res.status(200).json({ message: req.file.filename });
     } else {
       return res
